@@ -44,7 +44,22 @@ class PostController extends Controller
             ],401);
         }
 
-       
+        $img = $request->image;
+        $ext = $img->getClientOriginalExtension();
+        $imageName = time(). '.' . $ext;
+        $img->move(public_path().'/uploads',$imageName);
+
+        $user = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $imageName,
+        ]);
+
+        return response()->json([
+                'status' => true,
+                'message' => 'User Created Successfully',
+                'user' => $user,
+            ],200);
     }
 
     /**
@@ -52,7 +67,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        
+
     }
 
     /**
