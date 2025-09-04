@@ -141,6 +141,17 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $imagePath =  Post::select('image')->where('id', $id)->get();
+        $filePath = public_path().'/uploads'.$imagePath[0]['image'];
+        
+        unlink($filePath);
+
+        $post = Post::where('id' ,$id)->delete();
+
+        return response()->json([
+                'status' => true,
+                'message' => 'Your post has been removed',
+                'post' => $post,
+            ],200);
     }
 }
